@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WebApplication1.Models;
 
 namespace WebApplication1.Data
 {
@@ -12,5 +10,6 @@ namespace WebApplication1.Data
             : base(options)
         {
         }
+        public DbSet<SystemExpirationTable> SystemExpirationTable { set; get; }
     }
 }

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -12,6 +9,10 @@ namespace WebApplication1.Controllers
     {
         public IActionResult Index()
         {
+            DateTime currentTime = DateTime.Now;
+            SystemExpiration systemExpiration = SystemExpiration.Instance(currentTime, null);
+            ViewBag.Expiration = systemExpiration.Expiration;
+            ViewBag.IsExpired = systemExpiration.IsExpired(currentTime);
             return View();
         }
 

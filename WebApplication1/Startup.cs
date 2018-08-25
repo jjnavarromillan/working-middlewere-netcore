@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApplication1.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Threading.Tasks;
+using WebApplication1.Data;
 
 namespace WebApplication1
 {
@@ -57,6 +54,18 @@ namespace WebApplication1
                 app.UseHsts();
             }
 
+            DateTime expiration = DateTime.Now.AddDays(1);
+            app.Use(async (context, next) =>
+            {
+                Console.WriteLine("Valitating Expiration System");
+
+                await Task.Run(() => SystemExpiration.Instance(expiration, Configuration));
+                await next();
+
+                Console.WriteLine("Finalizing Valitating Expiration System");
+            });
+
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
@@ -70,5 +79,7 @@ namespace WebApplication1
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
     }
+
 }
